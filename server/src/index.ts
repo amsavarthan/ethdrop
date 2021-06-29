@@ -31,7 +31,7 @@ console.log(`Starting server on ${PORT}`);
 mongoose
     .connect(DB, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        app.use(express.static('../build'));
+        app.use(express.static('../client/build'));
 
         const progress_middleware: RequestHandler = (request: Request, _, next: NextFunction) => {
             let progress = 0;
