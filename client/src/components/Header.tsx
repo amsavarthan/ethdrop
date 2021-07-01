@@ -5,6 +5,7 @@ const Header = () => {
     return (
         <Fragment>
             <img
+                draggable="false"
                 height="150px"
                 width="150px"
                 src={`${window.location.origin}/assets/floating_diamond.gif`}

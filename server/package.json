@@ -30,6 +30,6 @@
         "dev": "yarn nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
         "build": "tsc",
         "start": "node dist/index.js",
-        "restart": "cd ../client && yarn build && cd ../server && yarn dev"
+        "fresh": "cd ../client && yarn build && cd ../server && yarn dev"
     }
 }
