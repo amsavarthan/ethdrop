@@ -12,6 +12,24 @@ export enum Networks {
     Kovan = 42,
 }
 
+export const IconTypes = [
+    '3d',
+    'acrobat',
+    'audio',
+    'binary',
+    'code',
+    'compressed',
+    'document',
+    'drive',
+    'font',
+    'image',
+    'presentation',
+    'settings',
+    'spreadsheet',
+    'vector',
+    'video',
+];
+
 export const formatBytes = (bytes: number, decimals = 2): string => {
     if (bytes === 0) return '0 Bytes';
 
@@ -40,7 +58,7 @@ export const getErrorMessage = (error: Error): string => {
     if (error instanceof NoEthereumProviderError) {
         return 'Install MetaMask or visit from a dApp browser on mobile.';
     } else if (error instanceof UnsupportedChainIdError) {
-        return 'This dApp only works with Ethereum Testnets';
+        return 'This dApp only works on Rinkeby Testnet';
     } else if (error instanceof UserRejectedRequestError) {
         return 'Please authorize EthDrop to access your Ethereum account.';
     } else {

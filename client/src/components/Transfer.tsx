@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Container, SlideFade } from '@chakra-ui/react';
 // import AccountCard from './AccountCard';
 import TransferCard from './TransferCard';
@@ -7,6 +7,18 @@ import './Transfer.css';
 
 const Transfer: FC = () => {
     const [file, setFile] = useState<File>();
+    const { ethereum } = window as any;
+
+    useEffect(() => {
+        if (ethereum && ethereum.on) {
+            ethereum.on('chainChanged', () => {
+                setFile(undefined);
+            });
+            ethereum.on('accountsChanged', () => {
+                setFile(undefined);
+            });
+        }
+    });
 
     const onFileChoosed = (event: React.ChangeEvent<HTMLInputElement>): void => {
         event.stopPropagation();

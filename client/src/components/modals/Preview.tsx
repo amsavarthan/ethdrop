@@ -1,27 +1,11 @@
 import React from 'react';
 import { IconType, FileIcon } from 'react-file-icon';
 import { Image, Box } from '@chakra-ui/react';
+import { IconTypes } from '../../utils';
+
 interface Props {
     data: File;
 }
-
-const IconTypes = [
-    '3d',
-    'acrobat',
-    'audio',
-    'binary',
-    'code',
-    'compressed',
-    'document',
-    'drive',
-    'font',
-    'image',
-    'presentation',
-    'settings',
-    'spreadsheet',
-    'vector',
-    'video',
-];
 
 const PreviewLayout = ({ data }: Props) => {
     const getFileType = (): IconType => {

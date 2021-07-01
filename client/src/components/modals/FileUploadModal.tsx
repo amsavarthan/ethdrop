@@ -88,7 +88,7 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
 
     const handleTransfer = async (event: FormEvent) => {
         event.preventDefault();
-        if (valid) {
+        if (valid && account) {
             setCanUpload(true);
             const formData = new FormData();
             formData.append('file', fileData);
@@ -106,8 +106,9 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
     const performTransaction = async (data: string) => {
         try {
             await contract.transferFile(ethAddress, data);
-            setProgress(0);
             socket.off('progress');
+            setProgress(0);
+            toast.closeAll();
             toast({
                 title: 'Transaction Submitted',
                 description: `Waiting for confirmation from the blockchain.`,
@@ -121,8 +122,6 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
                     title: 'Transferred Successfully',
                     description: `${fileData.name} sent to ${ethAddress}`,
                     status: 'success',
-                    duration: null,
-                    isClosable: true,
                 });
             });
         } catch (error) {
@@ -132,8 +131,6 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
                 title: 'Transfer Failed',
                 description: error.message,
                 status: 'error',
-                duration: 4000,
-                isClosable: true,
             });
         }
     };
@@ -185,7 +182,6 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
                                 </Collapse>
                             </VStack>
                         </AlertDialogBody>
-
                         <AlertDialogFooter>
                             {canUpload ? (
                                 <Progress

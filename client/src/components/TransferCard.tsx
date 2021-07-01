@@ -1,12 +1,9 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, VStack, Collapse } from '@chakra-ui/react';
 import FileChooser from './filechooser/FileChooser';
 import Header from './Header';
 import MetamaskButton from './MetamaskButton';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
 
 interface Props {
     onFileChoosed: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -14,16 +11,20 @@ interface Props {
 }
 
 const TransferCard = ({ onFileChoosed, onFileDropped }: Props) => {
-    const { active } = useWeb3React<Web3Provider>();
+    const [isUserLoggedIn, setUserLoggedIn] = useState(false);
+
+    const authenticated = (value: boolean) => {
+        setUserLoggedIn(value);
+    };
 
     return (
         <Box p={10} borderRadius={8} bgColor="blackAlpha.700" shadow="2xl">
             <VStack justifyContent="center" h="100%">
                 <Header />
-                <Collapse in={active}>
+                <Collapse in={isUserLoggedIn}>
                     <FileChooser onFileChoosed={onFileChoosed} onFileDropped={onFileDropped} />
                 </Collapse>
-                <MetamaskButton />
+                <MetamaskButton authenticated={authenticated} loggedIn={isUserLoggedIn} />
             </VStack>
         </Box>
     );

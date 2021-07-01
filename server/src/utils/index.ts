@@ -9,6 +9,8 @@ export const DB = process.env.MONGODB_URI;
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 const IV_LENGTH = 16; // For AES, this is always 16
 
+export const getRandomNonce = () => Math.floor(Math.random() * 10000);
+
 export const bytes32FromIpfs = (ipfsHash: string) => {
     return `0x${bs58.decode(ipfsHash).slice(2).toString('hex')}`;
 };
