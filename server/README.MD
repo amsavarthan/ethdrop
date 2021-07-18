@@ -9,7 +9,7 @@ It's the backbone of ethdrop and where every magical things happen such as uploa
 
 > Before proceeding create a **.env** file and add the following.
 > 
-> MONGODB_URI=<DB_URI>
+> MONGODB_URI=<DB_URI> <br/>
 > ENCRYPTION_KEY=<RANDOM_32_CHARS>
 
  1. Check out the readme in [client 🧑‍💼](https://github.com/amsavarthan/ethdrop/tree/main/client  "Client 🧑‍💼") folder, so that you don't run into any error
