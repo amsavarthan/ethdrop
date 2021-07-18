@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { FC } from 'react';
 import { VStack } from '@chakra-ui/react';
 import FileDropHolder from './FileDropHolder';
 import Seperator from '../Seperator';
@@ -10,9 +9,9 @@ interface Props {
     onFileChoosed: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FileChooser = ({ onFileDropped, onFileChoosed }: Props) => {
+const FileChooser: FC<Props> = ({ onFileDropped, onFileChoosed }): JSX.Element => {
     return (
-        <VStack justifyContent="center">
+        <VStack w="100%" px={6} justifyContent="center">
             <FileDropHolder onFileDropped={onFileDropped} />
             <Seperator />
             <FileChooserButton onFileChoosed={onFileChoosed} />

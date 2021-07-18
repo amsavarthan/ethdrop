@@ -3,8 +3,10 @@ import React, { FC } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Web3ReactProvider } from '@web3-react/core';
 import { ExternalProvider, JsonRpcFetchFunc, Web3Provider } from '@ethersproject/providers';
-import Transfer from './Transfer';
 import { POLLING_INTERVAL } from '../utils';
+import { extendTheme } from '@chakra-ui/react';
+
+import Home from './Home';
 
 const getLibrary = (provider: ExternalProvider | JsonRpcFetchFunc): Web3Provider => {
     const library = new Web3Provider(provider);
@@ -12,11 +14,32 @@ const getLibrary = (provider: ExternalProvider | JsonRpcFetchFunc): Web3Provider
     return library;
 };
 
-const App: FC = () => {
+const colors = {
+    brand: {
+        purple: '#5a44d6',
+    },
+};
+const theme = extendTheme({
+    colors,
+    components: {
+        Text: {
+            baseStyle: {
+                fontFamily: 'Work Sans',
+            },
+            variants: {
+                bold: {
+                    fontFamily: 'Montserrat',
+                },
+            },
+        },
+    },
+});
+
+const App: FC = (): JSX.Element => {
     return (
-        <ChakraProvider>
+        <ChakraProvider theme={theme}>
             <Web3ReactProvider getLibrary={getLibrary}>
-                <Transfer />
+                <Home />
             </Web3ReactProvider>
         </ChakraProvider>
     );

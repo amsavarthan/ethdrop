@@ -1,20 +1,21 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { FileDrop } from 'react-file-drop';
-import { Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 interface Props {
-    // eslint-disable-next-line no-unused-vars
     onFileDropped: (files: FileList | null) => void;
 }
 
-const FileDropHolder = ({ onFileDropped }: Props) => {
-    const [dropping, isDropping] = useState<Boolean>(false);
+const FileDropHolder: FC<Props> = ({ onFileDropped }): JSX.Element => {
+    const [dropping, isDropping] = useState<boolean>(false);
 
     return (
-        <div style={{ marginTop: '3rem', marginBottom: '2rem' }}>
+        <Box style={{ marginTop: '3rem', marginBottom: '2rem' }}>
             <FileDrop
-                onFrameDragLeave={() => isDropping(false)}
+                onFrameDragLeave={() => {
+                    isDropping(false);
+                    console.log('onframedragleave');
+                }}
                 onDragLeave={() => isDropping(false)}
                 onDragOver={() => isDropping(true)}
                 onDrop={(files: FileList | null) => {
@@ -23,16 +24,17 @@ const FileDropHolder = ({ onFileDropped }: Props) => {
                 }}
             >
                 <Text
-                    color={dropping ? 'whiteAlpha.600' : 'whiteAlpha.700'}
-                    borderRadius={8}
-                    border={`2px dashed rgba(255, 255, 255, ${dropping ? '0.25' : '0.36'})`}
+                    textColor={dropping ? 'gray.400' : 'gray.500'}
+                    borderRadius="md"
+                    border="2px dashed"
+                    borderColor={dropping ? 'gray.200' : 'gray.300'}
                     px={12}
                     py={8}
                 >
                     Drop anything here
                 </Text>
             </FileDrop>
-        </div>
+        </Box>
     );
 };
 

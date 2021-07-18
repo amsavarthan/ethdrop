@@ -1,39 +1,28 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
-import { Button, useToast } from '@chakra-ui/react';
+import React, { FC, useEffect } from 'react';
+import { Button, Image, useToast } from '@chakra-ui/react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { injected } from '../connectors';
 import axios from 'axios';
 
 interface Props {
-    // eslint-disable-next-line no-unused-vars
     authenticated: (value: boolean) => void;
-    loggedIn: boolean;
+    loggedIn?: boolean;
 }
-const MetamaskButton = ({ authenticated, loggedIn }: Props) => {
-    const { activate, active, deactivate, account, library } = useWeb3React<Web3Provider>();
+const LoginButton: FC<Props> = ({ authenticated }): JSX.Element => {
+    const { activate, deactivate, account, library } = useWeb3React<Web3Provider>();
 
-    const toast = useToast({ position: 'bottom', duration: 3000 });
+    const toast = useToast({ position: 'top-right', duration: 3000 });
 
-    useEffect(() => {
-        if (account) {
-            getNonceForSignIn();
-            return;
-        }
-        authenticated(false);
-    }, [account]);
-
-    const authenticateMetamask = () => {
-        if (active) {
-            deactivate();
-            return;
-        }
+    const authenticateMetamask = (): void => {
         activate(injected);
     };
 
-    // eslint-disable-next-line no-unused-vars
-    const getNonceForSignIn = async () => {
+    useEffect(() => {
+        if (account) getNonceForSignIn();
+    }, [account]);
+
+    const getNonceForSignIn = async (): Promise<void> => {
         authenticated(false);
         try {
             const response = await axios.get('/user', {
@@ -48,7 +37,7 @@ const MetamaskButton = ({ authenticated, loggedIn }: Props) => {
         }
     };
 
-    const signInWithNonce = async (nonce: number) => {
+    const signInWithNonce = async (nonce: number): Promise<void> => {
         try {
             const signature = await (library as Web3Provider)
                 .getSigner(account as string)
@@ -59,7 +48,7 @@ const MetamaskButton = ({ authenticated, loggedIn }: Props) => {
         }
     };
 
-    const verifySignature = async (signature: string) => {
+    const verifySignature = async (signature: string): Promise<void> => {
         try {
             const result = await axios.post('/user', {
                 signature: signature,
@@ -81,7 +70,7 @@ const MetamaskButton = ({ authenticated, loggedIn }: Props) => {
         }
     };
 
-    const handleError = (message: string) => {
+    const handleError = (message: string): void => {
         deactivate();
         toast.closeAll();
         toast({
@@ -92,18 +81,18 @@ const MetamaskButton = ({ authenticated, loggedIn }: Props) => {
     };
 
     return (
-        <Button onClick={authenticateMetamask} style={{ marginTop: '2rem' }}>
-            <img
+        <Button _focus={undefined} onClick={authenticateMetamask} style={{ marginTop: '2rem' }}>
+            <Image
                 draggable="false"
                 height="24px"
                 width="24px"
                 style={{ marginRight: '8px' }}
-                alt="metamask"
+                alt="metamask_logo"
                 src={`${window.location.origin}/assets/metamask.svg`}
             />
-            {`${loggedIn ? 'Disconnect' : 'Connect'} Metamask`}
+            Login with Metamask
         </Button>
     );
 };
 
-export default MetamaskButton;
+export default LoginButton;

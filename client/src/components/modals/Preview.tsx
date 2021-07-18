@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { IconType, FileIcon } from 'react-file-icon';
 import { Image, Box } from '@chakra-ui/react';
 import { IconTypes } from '../../utils';
@@ -7,7 +7,7 @@ interface Props {
     data: File;
 }
 
-const PreviewLayout = ({ data }: Props) => {
+const PreviewLayout: FC<Props> = ({ data }): JSX.Element => {
     const getFileType = (): IconType => {
         if (data) {
             const type = data.type.split('/')[0];

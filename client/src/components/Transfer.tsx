@@ -1,11 +1,10 @@
+import { SlideFade, Grid, GridItem, Image, useMediaQuery } from '@chakra-ui/react';
 import React, { FC, useEffect, useState } from 'react';
-import { Container, SlideFade } from '@chakra-ui/react';
-// import AccountCard from './AccountCard';
-import TransferCard from './TransferCard';
+import FileChooser from './filechooser/FileChooser';
 import FileUploadModal from './modals/FileUploadModal';
-import './Transfer.css';
 
-const Transfer: FC = () => {
+const Transfer: FC = (): JSX.Element => {
+    const [isNotMobile] = useMediaQuery('(min-width:720px)');
     const [file, setFile] = useState<File>();
     const { ethereum } = window as any;
 
@@ -31,14 +30,27 @@ const Transfer: FC = () => {
     };
 
     return (
-        <Container py={16} maxW="container.sm" minH="100vh">
-            <SlideFade in={true} delay={0.1}>
-                {/* <AccountCard /> */}
-                {/* <br /> */}
-                <TransferCard onFileChoosed={onFileChoosed} onFileDropped={onFileDropped} />
-                {file && <FileUploadModal fileData={file} />}
+        <>
+            <SlideFade in={true}>
+                <Grid w="100%" minH="100vh" templateColumns={isNotMobile && 'repeat(2,1fr)'}>
+                    {isNotMobile && (
+                        <GridItem>
+                            <Image
+                                draggable="false"
+                                width="100%"
+                                h="100%"
+                                objectFit="cover"
+                                objectPosition="right"
+                                src={`${window.location.origin}/assets/abstract.svg`}
+                                alt="ethdrop"
+                            />
+                        </GridItem>
+                    )}
+                    <FileChooser onFileChoosed={onFileChoosed} onFileDropped={onFileDropped} />
+                </Grid>
             </SlideFade>
-        </Container>
+            {file && <FileUploadModal fileData={file} />}
+        </>
     );
 };
 

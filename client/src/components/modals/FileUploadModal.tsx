@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useRef, ChangeEvent, FormEvent } from 'react';
+import React, { useEffect, useState, useRef, ChangeEvent, FormEvent, FC } from 'react';
 import {
     AlertDialog,
     AlertDialogOverlay,
@@ -16,6 +15,7 @@ import {
     useToast,
     Collapse,
     Progress,
+    AlertDialogCloseButton,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { isAddress } from 'web3-utils';
@@ -34,7 +34,7 @@ interface Props {
 
 const socket = io(window.location.origin, { autoConnect: false });
 
-const FileUploadAlertDialog = ({ fileData }: Props) => {
+const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
     const { library, account } = useWeb3React<Web3Provider>();
 
     const contract: Contract = new Contract(
@@ -43,13 +43,13 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
         library?.getSigner(account as string),
     );
 
-    const toast = useToast({ position: 'bottom', duration: 3000 });
+    const toast = useToast({ position: 'top-right', duration: 3000 });
 
-    const [ethAddress, setEthAddress] = useState<String>();
-    const [message, setMessage] = useState<String>();
-    const [valid, setValid] = useState<Boolean>(false);
-    const [open, setOpen] = useState<Boolean>(false);
-    const [canUpload, setCanUpload] = useState<Boolean>(false);
+    const [ethAddress, setEthAddress] = useState<string>();
+    const [message, setMessage] = useState<string>();
+    const [valid, setValid] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [canUpload, setCanUpload] = useState<boolean>(false);
 
     const [progress, setProgress] = useState(0);
 
@@ -64,7 +64,6 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
         } else {
             socket.disconnect();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open]);
 
     useEffect(() => {
@@ -75,18 +74,18 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
         }
     }, [fileData]);
 
-    const handleClose = () => setOpen(false);
+    const handleClose = (): void => setOpen(false);
 
-    const handleMessageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleMessageChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setMessage(event.target.value);
     };
 
-    const handleEthAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleEthAddressChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setEthAddress(event.target.value);
         setValid(isAddress(event.target.value));
     };
 
-    const handleTransfer = async (event: FormEvent) => {
+    const handleTransfer = async (event: FormEvent): Promise<void> => {
         event.preventDefault();
         if (valid && account) {
             setCanUpload(true);
@@ -103,7 +102,7 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
         }
     };
 
-    const performTransaction = async (data: string) => {
+    const performTransaction = async (data: string): Promise<void> => {
         try {
             await contract.transferFile(ethAddress, data);
             socket.off('progress');
@@ -138,8 +137,8 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
     return (
         <AlertDialog
             closeOnOverlayClick={false}
-            leastDestructiveRef={inputRef as any}
-            isOpen={open as boolean}
+            leastDestructiveRef={inputRef}
+            isOpen={open}
             onClose={handleClose}
         >
             <AlertDialogOverlay>
@@ -148,19 +147,20 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             {canUpload ? 'Transferring File' : 'Transfer File'}
                         </AlertDialogHeader>
+                        <AlertDialogCloseButton _focus={undefined} />
                         <AlertDialogBody>
                             <VStack>
                                 <Preview data={fileData} />
                                 <Text textAlign="center">{fileData.name}</Text>
                                 <Text color="gray" lineHeight={0.5} textAlign="center">
-                                    {formatBytes(fileData.size as number)}
+                                    {formatBytes(fileData.size)}
                                 </Text>
                                 <Collapse style={{ width: '100%' }} in={!canUpload}>
                                     <VStack>
                                         <InputGroup style={{ marginTop: '1.5rem' }}>
                                             <Input
-                                                value={ethAddress as string}
-                                                ref={inputRef as any}
+                                                value={ethAddress}
+                                                ref={inputRef}
                                                 spellCheck={false}
                                                 onChange={handleEthAddressChange}
                                                 variant="filled"
@@ -173,7 +173,7 @@ const FileUploadAlertDialog = ({ fileData }: Props) => {
                                             </InputRightElement>
                                         </InputGroup>
                                         <Input
-                                            value={message as string}
+                                            value={message}
                                             onChange={handleMessageChange}
                                             variant="filled"
                                             placeholder="Message (optional)"

@@ -1,13 +1,12 @@
 import { AttachmentIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/react';
-import React, { useRef, Fragment } from 'react';
+import React, { useRef, Fragment, FC } from 'react';
 
 interface Props {
-    // eslint-disable-next-line no-unused-vars
     onFileChoosed: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FileChooserButton = ({ onFileChoosed }: Props) => {
+const FileChooserButton: FC<Props> = ({ onFileChoosed }): JSX.Element => {
     const inputFile = useRef<HTMLInputElement>(null);
 
     const openFileChooser = (): void => {
@@ -17,8 +16,9 @@ const FileChooserButton = ({ onFileChoosed }: Props) => {
     return (
         <Fragment>
             <Button
-                textColor="white"
-                variant="unstyled"
+                _focus={undefined}
+                colorScheme="gray"
+                variant="outline"
                 rightIcon={<AttachmentIcon />}
                 onClick={openFileChooser}
             >
