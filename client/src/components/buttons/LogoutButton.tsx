@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Center, IconButton } from '@chakra-ui/react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import MdIcon from './MdIcon';
+import MdIcon from '../MdIcon';
 
 const LogoutButton: FC = (): JSX.Element => {
     const { deactivate } = useWeb3React<Web3Provider>();

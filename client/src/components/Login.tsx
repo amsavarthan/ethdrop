@@ -1,6 +1,6 @@
 import { VStack, Text, Image } from '@chakra-ui/react';
 import React, { FC } from 'react';
-import LoginButton from './LoginButton';
+import LoginButton from './buttons/LoginButton';
 interface Props {
     onAuthenticated: (value: boolean) => void;
 }

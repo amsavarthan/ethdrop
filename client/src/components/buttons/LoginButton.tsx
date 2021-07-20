@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { Button, Image, useToast } from '@chakra-ui/react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { injected } from '../connectors';
+import { injected } from '../../connectors';
 import axios from 'axios';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 const LoginButton: FC<Props> = ({ authenticated }): JSX.Element => {
     const { activate, deactivate, account, library } = useWeb3React<Web3Provider>();
 
-    const toast = useToast({ position: 'top-right', duration: 3000 });
+    const toast = useToast({ position: 'bottom', isClosable: true });
 
     const authenticateMetamask = (): void => {
         activate(injected);

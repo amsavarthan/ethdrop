@@ -1,23 +1,11 @@
 import { SlideFade, Grid, GridItem, Image, useMediaQuery } from '@chakra-ui/react';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import FileChooser from './filechooser/FileChooser';
 import FileUploadModal from './modals/FileUploadModal';
 
 const Transfer: FC = (): JSX.Element => {
     const [isNotMobile] = useMediaQuery('(min-width:720px)');
     const [file, setFile] = useState<File>();
-    const { ethereum } = window as any;
-
-    useEffect(() => {
-        if (ethereum && ethereum.on) {
-            ethereum.on('chainChanged', () => {
-                setFile(undefined);
-            });
-            ethereum.on('accountsChanged', () => {
-                setFile(undefined);
-            });
-        }
-    });
 
     const onFileChoosed = (event: React.ChangeEvent<HTMLInputElement>): void => {
         event.stopPropagation();
@@ -42,7 +30,6 @@ const Transfer: FC = (): JSX.Element => {
                                 objectFit="cover"
                                 objectPosition="right"
                                 src={`${window.location.origin}/assets/abstract.svg`}
-                                alt="ethdrop"
                             />
                         </GridItem>
                     )}

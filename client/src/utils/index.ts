@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError, UserRejectedRequestError } from '@web3-react/injected-connector';
 
 export const POLLING_INTERVAL = 12000;
-export const CONTRACT_ADDRESS = '0xD45Eac95Cbb5f804e3D43a66123b6322966F1C58';
+export const CONTRACT_ADDRESS = '0x7f28979a4D97F007b6470A0d1a6Ecf5F2037baf9';
 
 export enum Networks {
     Ropsten = 3,

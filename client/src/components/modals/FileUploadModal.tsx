@@ -16,6 +16,7 @@ import {
     Collapse,
     Progress,
     AlertDialogCloseButton,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { isAddress } from 'web3-utils';
@@ -43,13 +44,13 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
         library?.getSigner(account as string),
     );
 
-    const toast = useToast({ position: 'top-right', duration: 3000 });
+    const toast = useToast({ position: 'bottom', isClosable: true });
 
     const [ethAddress, setEthAddress] = useState<string>();
     const [message, setMessage] = useState<string>();
     const [valid, setValid] = useState<boolean>(false);
-    const [open, setOpen] = useState<boolean>(false);
     const [canUpload, setCanUpload] = useState<boolean>(false);
+    const { isOpen, onClose, onOpen } = useDisclosure();
 
     const [progress, setProgress] = useState(0);
 
@@ -68,13 +69,11 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
 
     useEffect(() => {
         if (fileData) {
-            setOpen(true);
+            onOpen();
             setCanUpload(false);
             setMessage('');
         }
     }, [fileData]);
-
-    const handleClose = (): void => setOpen(false);
 
     const handleMessageChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setMessage(event.target.value);
@@ -87,6 +86,7 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
 
     const handleTransfer = async (event: FormEvent): Promise<void> => {
         event.preventDefault();
+
         if (valid && account) {
             setCanUpload(true);
             const formData = new FormData();
@@ -115,7 +115,7 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
                 duration: null,
             });
             contract.once('Transaction', () => {
-                setOpen(false);
+                onClose();
                 toast.closeAll();
                 toast({
                     title: 'Transferred Successfully',
@@ -138,8 +138,8 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
         <AlertDialog
             closeOnOverlayClick={false}
             leastDestructiveRef={inputRef}
-            isOpen={open}
-            onClose={handleClose}
+            isOpen={isOpen}
+            onClose={onClose}
         >
             <AlertDialogOverlay>
                 <form onSubmit={handleTransfer} encType="multipart/form-data">
@@ -147,7 +147,7 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             {canUpload ? 'Transferring File' : 'Transfer File'}
                         </AlertDialogHeader>
-                        <AlertDialogCloseButton _focus={undefined} />
+                        {!canUpload && <AlertDialogCloseButton _focus={undefined} />}
                         <AlertDialogBody>
                             <VStack>
                                 <Preview data={fileData} />
@@ -193,7 +193,7 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
                                 />
                             ) : (
                                 <>
-                                    <Button onClick={handleClose}>Cancel</Button>
+                                    <Button onClick={onClose}>Cancel</Button>
                                     <Button type="submit" colorScheme="purple" ml={3}>
                                         Transfer
                                     </Button>

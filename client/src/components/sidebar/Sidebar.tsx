@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Grid, Image } from '@chakra-ui/react';
 import SidebarItem from './SidebarItem';
-import LogoutButton from './LogoutButton';
+import LogoutButton from '../buttons/LogoutButton';
 
 const Sidebar: FC = (): JSX.Element => {
     return (
-        <Grid bgColor="white" templateRows="1fr 1fr" pos="sticky" top="0" h="100%" w="80px">
+        <Grid bgColor="white" templateRows="1fr 1fr" pos="fixed" top="0" h="100vh" w="80px">
             <Image
                 draggable="false"
                 width="100%"

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { VStack } from '@chakra-ui/react';
 import FileDropHolder from './FileDropHolder';
-import Seperator from '../Seperator';
+import Seperator from './Seperator';
 import FileChooserButton from './FileChooserButton';
 
 interface Props {

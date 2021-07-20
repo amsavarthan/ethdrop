@@ -1,14 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Grid, ScaleFade, SlideFade, TabPanel, TabPanels, Tabs, useToast } from '@chakra-ui/react';
-import Sidebar from './Sidebar';
-import Login from './Login';
+import { ScaleFade, SlideFade, TabPanel, TabPanels, Tabs, useToast } from '@chakra-ui/react';
 import { useWeb3React } from '@web3-react/core';
+import Sidebar from './sidebar/Sidebar';
+import Login from './Login';
 import Transfer from './Transfer';
+import History from './history/History';
+import useInactiveListener from '../hooks/useInactiveListener';
 
 const Home: FC = (): JSX.Element => {
     const { active } = useWeb3React();
     const [isUserLoggedIn, setUserLoggedIn] = useState<boolean>(false);
-    const toast = useToast({ position: 'top-right', duration: 3000 });
+
+    const toast = useToast();
+    useInactiveListener();
 
     useEffect(() => {
         if (active) return;
@@ -19,17 +23,17 @@ const Home: FC = (): JSX.Element => {
     return isUserLoggedIn ? (
         <ScaleFade in={true}>
             <Tabs variant="unstyled" isLazy>
-                <Grid templateColumns="auto 1fr" w="100%" h="100vh">
-                    <Sidebar />
-                    <SlideFade in={true} delay={0.4} offsetY="-10px">
-                        <TabPanels>
-                            <TabPanel p={0}>
-                                <Transfer />
-                            </TabPanel>
-                            <TabPanel></TabPanel>
-                        </TabPanels>
-                    </SlideFade>
-                </Grid>
+                <Sidebar />
+                <SlideFade in={true} delay={0.4} offsetY="-10px">
+                    <TabPanels pt={0} ps="80px">
+                        <TabPanel p={0}>
+                            <Transfer />
+                        </TabPanel>
+                        <TabPanel borderLeft="1px solid" borderLeftColor="gray.200" ps={0} py={0}>
+                            <History />
+                        </TabPanel>
+                    </TabPanels>
+                </SlideFade>
             </Tabs>
         </ScaleFade>
     ) : (

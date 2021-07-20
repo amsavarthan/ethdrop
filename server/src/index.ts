@@ -2,7 +2,7 @@ import express, { NextFunction, Request, RequestHandler, Response } from 'expres
 import mongoose from 'mongoose';
 import multer from 'multer';
 
-import { performAuthentication, performUpload, performValidation } from './controllers';
+import { performAuthentication, performDecryption, performUpload, performValidation } from './controllers';
 import { Server } from 'socket.io';
 import { Socket } from 'socket.io/dist/socket';
 import { PORT, DB } from './utils';
@@ -50,21 +50,17 @@ io.on('connection', (_socket: Socket) => {
         };
 
         app.route('/user')
-            .get(async (request: Request, response: Response) => {
-                performAuthentication(request, response)
-            })
-            .post(async (request: Request, response: Response) => {
-                performValidation(request,response)
-            });
+            .get(async (request: Request, response: Response) => performAuthentication(request, response))
+            .post(async (request: Request, response: Response) => performValidation(request, response));
 
         app.post(
             '/upload',
             uploadProgress,
             file.single('file'),
-            (request: Request, response: Response) => {
-                performUpload(request, response, socket)
-            },
+            (request: Request, response: Response) => performUpload(request, response, socket),
         );
+
+        app.post('/decrypt', (request: Request, response: Response) => performDecryption(request, response))
 
         http.listen(PORT, () => {
             console.log(`Server running...`);

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { Socket } from 'socket.io';
 import { Request, Response } from 'express';
-import { bytes32FromIpfs, encrypt, getRandomNonce } from '../utils';
+import { bytes32FromIpfs, decrypt, encrypt, getRandomNonce, ipfsFromBytes32 } from '../utils';
 import { _isPresent, _uploadToIpfs } from './internal';
 import { bufferToHex } from 'ethereumjs-util';
 import { recoverPersonalSignature } from 'eth-sig-util';
@@ -31,11 +31,11 @@ export const performValidation = async (request: Request, response: Response) =>
         user.nonce = getRandomNonce();
         await user.save()
         return response.sendStatus(200);
-    } 
-    
+    }
+
     return response
-            .status(401)
-            .send({ message: 'Signature verification failed' });
+        .status(401)
+        .send({ message: 'Signature verification failed' });
 }
 
 export const performUpload = async (request: Request, response: Response, socket: Socket) => {
@@ -45,7 +45,10 @@ export const performUpload = async (request: Request, response: Response, socket
         const result = await _uploadToIpfs(request.file, socket)
         if (result) {
             const ipfsHash = bytes32FromIpfs(result.cid.toString());
-            const data = encrypt(`${ipfsHash}::${message}`);
+            const filename = request.file?.originalname
+            const sizeInBytes = request.file?.size
+            const mimetype = request.file?.mimetype
+            const data = encrypt(`${ipfsHash}::${message}::${filename}::${sizeInBytes}::${mimetype}`);
             return response.status(200).json({ data: data }).end();
         }
         return response.sendStatus(400);
@@ -58,4 +61,11 @@ export const performUpload = async (request: Request, response: Response, socket
             }
         });
     }
+}
+
+export const performDecryption = (request: Request, response: Response): void => {
+    let { data } = request.body;
+    const decryptedData = decrypt(data)
+    const ipfsHash = ipfsFromBytes32(decryptedData.split('::')[0])
+    response.status(200).json({ result: decryptedData, ipfsHash }).end();
 }
