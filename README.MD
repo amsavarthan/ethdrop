@@ -2,25 +2,40 @@
 ### Share files anonymously 👻 with the help of Blockchain and IPFS.
 
 #### Features :
+
 - Ethereum Login 😈
 - Decentralized Storage (IPFS) 🗂
 - Encryption 🔐
 
-#### Project Structure:
+#### Project Structure :
 
 ```
 ethdrop/
-  client/
+  packages/
+    client/
+    server/
     truffle/
-  server/
 ```
 
 The **client** folder contains react code.
 The **truffle** folder inside the client folder contains the smart contract code for Ethdrop.
-The **server** folder contains express js server code.
+The **server** folder contains express.js server code.
 
-For more detailed explanation go to specific directories:
+#### Setting up the project :
 
-[Client 🧑‍💼](https://github.com/amsavarthan/ethdrop/tree/main/client "Client 🧑‍💼")
-[Truffle 🍩](https://github.com/amsavarthan/ethdrop/tree/main/client/truffle "Truffle 🍩")
-[Server 🗄](https://github.com/amsavarthan/ethdrop/tree/main/server "Server 🗄")
+> Add a **.env** file in server folder, with the following fields
+> 
+> MONGODB_URI=<DB_URI> <br/>
+> ENCRYPTION_KEY=<RANDOM_32_CHARS>
+
+> Add a **.env** file in truffle folder, with the following fields
+> 
+> MNEMONIC=<METAMASK_ACCOUNT_SECRET_PHRASE> <br/>
+> INFURA_ENDPOINT=<INFURA_ENDPOINT_FOR_RINKEBY>
+
+ 1. Run `yarn install` 💁🏻‍♂️
+ 2. Followed by `yarn build` 🧑🏻‍💻
+ 3. Then run `yarn start` 🚀
+ 3. Once the app starts, navigate to `localhost:9900` 👀
+ 4. That's it 🎉
+

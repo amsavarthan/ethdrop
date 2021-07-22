@@ -1,8 +1,12 @@
 {
+    "name": "ethdrop",
+    "author": "Amsavarthan Lv",
+    "license": "MIT",
     "scripts": {
-        "start": "cd ./server && yarn build && yarn start",
-        "start:server": "cd ./server && yarn dev",
-        "start:client": "cd ./client && yarn start",
-        "heroku-postbuild": "cd ./client && yarn && yarn global add truffle && cd ./truffle && truffle compile && cd ../../server && yarn"
+        "build": "lerna bootstrap && lerna run build:contract && lerna run build:client && lerna run build:server",
+        "start": "lerna run start:server"
+    },
+    "devDependencies": {
+        "lerna": "^4.0.0"
     }
 }
