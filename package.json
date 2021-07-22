@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "build": "lerna bootstrap && lerna run build:contract && lerna run build:client && lerna run build:server",
-        "start": "lerna run start:server"
+        "start": "lerna run start:server --stream"
     },
     "devDependencies": {
         "lerna": "^4.0.0"
