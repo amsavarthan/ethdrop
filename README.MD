@@ -1,6 +1,8 @@
 # Ethdrop 
 ### Share files anonymously 👻 with the help of Blockchain and IPFS.
 
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+
 #### Features :
 
 - Ethereum Login 😈
