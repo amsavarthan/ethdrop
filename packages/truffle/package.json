@@ -4,11 +4,12 @@
     "license": "MIT",
     "dependencies": {
         "@truffle/hdwallet-provider": "^1.4.1",
-        "dotenv": "^10.0.0",
-        "truffle": "^5.4.1",
-        "typescript": "^4.3.5"
+        "dotenv": "^10.0.0"
     },
     "scripts": {
         "build:contract": "truffle compile"
+    },
+    "devDependencies": {
+        "truffle": "^5.4.1"
     }
 }
