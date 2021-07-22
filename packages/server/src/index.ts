@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, RequestHandler, Response } from 'express';
 import mongoose from 'mongoose';
 import multer from 'multer';
+import path from 'path';
 
 import { performAuthentication, performDecryption, performUpload, performValidation } from './controllers';
 import { Server } from 'socket.io';
@@ -32,9 +33,13 @@ io.on('connection', (_socket: Socket) => {
         await mongoose
             .connect(DB, { useNewUrlParser: true, useUnifiedTopology: true });
 
-        app.use(express.static('../client/build'));
+        app.use(express.static(path.resolve(__dirname, '../client/build')));
         app.use(express.urlencoded({ extended: true }));
         app.use(express.json())
+
+        app.get('*', (request: Request, response: Response) => {
+            response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+        });
 
         const uploadProgress: RequestHandler = (request: Request, _, next: NextFunction) => {
             let progress = 0;
