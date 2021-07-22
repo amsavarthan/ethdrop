@@ -1,8 +1,9 @@
 {
     "scripts": {
-        "build": "cd ./client && yarn build",
-        "start": "cd ./server && yarn fresh",
+        "build": "cd ./server && yarn fresh",
+        "build:client": "cd ./client && yarn build",
         "start:server": "cd ./server && yarn dev",
-        "start:client": "cd ./client && yarn start"
+        "start:client": "cd ./client && yarn start",
+        "heroku-postbuild": "cd ./client && yarn && yarn global add truffle && cd ./truffle && truffle compile && cd ../../server && yarn"
     }
 }
