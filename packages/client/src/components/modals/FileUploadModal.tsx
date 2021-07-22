@@ -57,7 +57,7 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
     const inputRef = useRef();
 
     useEffect(() => {
-        if (open) {
+        if (isOpen) {
             socket.connect();
             socket.on('progress', ({ progress }) => {
                 setProgress(progress);
@@ -65,7 +65,7 @@ const FileUploadAlertDialog: FC<Props> = ({ fileData }): JSX.Element => {
         } else {
             socket.disconnect();
         }
-    }, [open]);
+    }, [isOpen]);
 
     useEffect(() => {
         if (fileData) {
